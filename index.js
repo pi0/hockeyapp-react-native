@@ -1,7 +1,7 @@
 var {
-  NativeModules: {
+NativeModules: {
     RNHockeyApp
-  }
+}
 } = require('react-native');
 var invariant = require('invariant');
 
@@ -10,16 +10,16 @@ function checkInstalled(){
 }
 
 module.exports = {
-    AuthenticationType: {
-        Anonymous: 0,
-        EmailSecret: 1,
-        EmailPassword: 2,
-        DeviceUUID: 3,
-        Web: 4
-    },
-    configure(apiToken, autoSendCrashes, authenticationType, apiSecret, ignoreDefaultHandler) {
+AuthenticationType: {
+Anonymous: 0,
+EmailSecret: 1,
+EmailPassword: 2,
+DeviceUUID: 3,
+Web: 4
+},
+    configure(apiToken, autoSendCrashes, authenticationType, apiSecret, ignoreDefaultHandler, metrics) {
         checkInstalled();
-        RNHockeyApp.configure(apiToken, autoSendCrashes || true, authenticationType || 0, apiSecret || '', ignoreDefaultHandler || false);
+        RNHockeyApp.configure(apiToken, autoSendCrashes || true, authenticationType || 0, apiSecret || '', ignoreDefaultHandler || false, metrics || true);
     },
     start(){
         checkInstalled();
@@ -41,6 +41,10 @@ module.exports = {
     generateTestCrash(){
         checkInstalled();
         RNHockeyApp.generateTestCrash();
+    },
+    trackEvent(event){
+        checkInstalled();
+        RNHockeyApp.trackEvent(event);
     }
 }
 

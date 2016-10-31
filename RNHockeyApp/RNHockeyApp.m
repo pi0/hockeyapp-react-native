@@ -22,7 +22,7 @@ RCT_EXPORT_METHOD(configure:(NSString *) apiToken autoSend:(BOOL) autoSendCrashe
         token = apiToken;
         authType = apiAuthType;
         appSecret = apiAppSecret;
-        metrics = metrics_enabled
+        metrics = metrics_enabled;
         initialized = YES;
     } else {
         NSLog(@"Already initialized! \n");
@@ -110,7 +110,7 @@ RCT_EXPORT_METHOD(trackEvent: (NSString *) event)
 {
     if (initialized == YES) {
         BITMetricsManager *metricsManager = [BITHockeyManager sharedHockeyManager].metricsManager;
-        [metricsManager trackEventWithName:event]
+      [metricsManager trackEventWithName:event];
     } else {
         NSLog(@"Not initialized! \n");
     }
