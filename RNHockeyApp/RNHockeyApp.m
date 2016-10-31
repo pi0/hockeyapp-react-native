@@ -3,6 +3,7 @@
 
 static BOOL initialized = NO;
 static BOOL autoSend = YES;
+static BOOL metrics = YES;
 static AuthType authType = 0;
 static NSString *token = nil;
 static NSString *appSecret = nil;
@@ -14,13 +15,14 @@ static NSString *appSecret = nil;
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(configure:(NSString *) apiToken autoSend:(BOOL) autoSendCrashes authType:(NSInteger) apiAuthType appSecret:(NSString*) apiAppSecret ignoreDefaultHandler:(BOOL) ignoreDefaultCrashHandler)
+RCT_EXPORT_METHOD(configure:(NSString *) apiToken autoSend:(BOOL) autoSendCrashes authType:(NSInteger) apiAuthType appSecret:(NSString*) apiAppSecret ignoreDefaultHandler:(BOOL) ignoreDefaultCrashHandler metrics:(BOOL) metrics_enabled)
 {
     if (initialized == NO) {
         autoSend = autoSendCrashes;
         token = apiToken;
         authType = apiAuthType;
         appSecret = apiAppSecret;
+        metrics = metrics_enabled
         initialized = YES;
     } else {
         NSLog(@"Already initialized! \n");
@@ -35,6 +37,11 @@ RCT_EXPORT_METHOD(start) {
             if (autoSend == YES) {
                 [[BITHockeyManager sharedHockeyManager].crashManager setCrashManagerStatus:BITCrashManagerStatusAutoSend];
             }
+
+            if(metrics == NO) {
+                [BITHockeyManager sharedHockeyManager].disableMetricsManager = YES;
+            }
+
             switch (authType) {
                 case EmailSecret:
                     NSLog(@"react-native-hockeyapp: Email + Secret Auth set");
@@ -94,6 +101,16 @@ RCT_EXPORT_METHOD(feedback)
 {
     if (initialized == YES) {
         [[BITHockeyManager sharedHockeyManager].feedbackManager showFeedbackListView];
+    } else {
+        NSLog(@"Not initialized! \n");
+    }
+}
+
+RCT_EXPORT_METHOD(trackEvent: (NSString *) event)
+{
+    if (initialized == YES) {
+        BITMetricsManager *metricsManager = [BITHockeyManager sharedHockeyManager].metricsManager;
+        [metricsManager trackEventWithName:event]
     } else {
         NSLog(@"Not initialized! \n");
     }

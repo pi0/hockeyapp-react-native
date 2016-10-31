@@ -59,3 +59,7 @@ proguard/
 
 # Android Studio captures folder
 captures/
+
+# Intellij project files
+.ida
+*.iml

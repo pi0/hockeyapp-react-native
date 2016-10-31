@@ -11,7 +11,7 @@
 ## Installation
 
 ```bash
-npm install react-native-hockeyapp --save
+npm install hockeyapp-react-native --save
 ```
 
 ## iOS
@@ -72,8 +72,8 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    classpath 'com.android.tools.build:gradle:1.3.1'
-    classpath 'net.hockeyapp.android:HockeySDK:3.7.0' // <--- add this
+    classpath 'com.android.tools.build:gradle:....'
+    classpath 'net.hockeyapp.android:HockeySDK:4.1.1' // <--- add this
 }
 ```
 
@@ -86,7 +86,7 @@ dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:0.29.+"
-    compile project(":react-native-hockeyapp") // <--- add this
+    compile project(":hockeyapp-react-native") // <--- add this
 }
 ```
 
@@ -206,12 +206,28 @@ componentDidMount() {
 
 You have available these methods:
 ```js
-HockeyApp.configure(HockeyAppId: string, autoSendCrashReports: boolean = true, authenticationType: AuthenticationType = AuthenticationType.Anonymous, appSecret: string = '', ignoreDefaultHandler: string = false); // Configure the settings
+// Configure the settings
+HockeyApp.configure(
+    HockeyAppId: string, 
+    autoSendCrashReports: boolean = true,
+    authenticationType: AuthenticationType = AuthenticationType.Anonymous, 
+    appSecret: string = '', 
+    ignoreDefaultHandler: string = false,
+    metrics: boolean = true
+); 
+
 HockeyApp.start(); // Start the HockeyApp integration
+
 HockeyApp.checkForUpdate(); // Check if there's new version and if so trigger update
+
 HockeyApp.feedback(); // Ask user for feedback.
+
 HockeyApp.addMetadata(metadata: object); // Add metadata to crash report.  The argument must be an object with key-value pairs.
+
 HockeyApp.generateTestCrash(); // Generate test crash. Only works in no-debug mode.
+
+HockeyApp.trackEvent(eventName: string); // Send event metrics
+
 ```
 The following authentication methods are available:
 
