@@ -88,7 +88,7 @@ public class RNHockeyAppModule extends ReactContextBaseJavaModule {
             CrashManager.register(currentActivity, _token, _crashManagerListener);
 
             if (_metrics) {
-                MetricsManager.register(this, Activity);
+                MetricsManager.register(currentActivity, currentActivity.getApplication());
             }
 
             int authenticationMode;
